@@ -2,6 +2,7 @@
 <html lang="ja">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>フィジカル管理ツール</title>
     <style>
         :root {
@@ -17,28 +18,35 @@
             background: var(--bg-light);
             color: #1e293b;
             margin: 0;
-            padding: 20px;
+            padding: 12px;
         }
         .container {
             max-width: 800px;
             margin: 0 auto;
         }
         h1 {
-            font-size: 1.5rem;
+            font-size: 1.4rem;
             margin-bottom: 16px;
+            text-align: center;
         }
         .tab-menu {
             display: flex;
-            gap: 8px;
+            gap: 6px;
             margin-bottom: 16px;
+            overflow-x: auto;
+            padding-bottom: 4px;
         }
         .tab-btn {
-            padding: 8px 16px;
+            padding: 8px 12px;
             border: none;
             background: #e2e8f0;
             cursor: pointer;
             border-radius: 6px;
             font-weight: bold;
+            font-size: 0.9rem;
+            white-space: nowrap;
+            flex: 1;
+            text-align: center;
         }
         .tab-btn.active {
             background: var(--primary);
@@ -52,7 +60,7 @@
         }
         .card {
             background: white;
-            padding: 20px;
+            padding: 16px;
             border-radius: 8px;
             box-shadow: 0 1px 3px rgba(0,0,0,0.1);
             margin-bottom: 16px;
@@ -68,11 +76,12 @@
         }
         input[type="text"], input[type="number"], input[type="date"], select, textarea {
             width: 100%;
-            padding: 8px 12px;
+            padding: 10px 12px;
             border: 1px solid var(--border);
             border-radius: 6px;
             box-sizing: border-box;
             font-size: 1rem;
+            background: #fff;
         }
         textarea {
             resize: vertical;
@@ -83,15 +92,35 @@
             grid-template-columns: 1fr 1fr;
             gap: 12px;
         }
+        
+        /* スマホ向けのレイアウト調整（画面幅600px以下） */
+        @media (max-width: 600px) {
+            body {
+                padding: 8px;
+            }
+            .card {
+                padding: 12px;
+            }
+            .grid-2 {
+                grid-template-columns: 1fr;
+                gap: 0;
+            }
+            .analytics-controls {
+                flex-direction: column;
+                gap: 12px;
+            }
+        }
+
         .btn-action, .btn-success, .btn-danger {
             width: 100%;
-            padding: 10px;
+            padding: 12px;
             border: none;
             border-radius: 6px;
             font-weight: bold;
             cursor: pointer;
             color: white;
             font-size: 1rem;
+            text-align: center;
         }
         .btn-action { background: var(--primary); }
         .btn-success { background: var(--success); margin-bottom: 16px; }
@@ -110,15 +139,20 @@
             align-items: center;
             gap: 8px;
         }
+        .checkbox-item input[type="checkbox"] {
+            width: 20px;
+            height: 20px;
+        }
         .exceed-label {
             color: var(--danger);
             font-weight: bold;
             margin-left: 8px;
             font-size: 0.85rem;
+            display: inline-block;
         }
         .chart-container {
             position: relative;
-            height: 350px;
+            height: 300px;
             width: 100%;
         }
         .analytics-controls {
@@ -142,15 +176,17 @@
         table {
             width: 100%;
             border-collapse: collapse;
+            min-width: 500px;
         }
         th, td {
-            padding: 8px;
+            padding: 10px 8px;
             border-bottom: 1px solid var(--border);
             text-align: left;
-            font-size: 0.9rem;
+            font-size: 0.85rem;
         }
         .table-responsive {
             overflow-x: auto;
+            -webkit-overflow-scrolling: touch;
         }
     </style>
 </head>
@@ -169,7 +205,7 @@
     <!-- 1. 毎日の記録ページ -->
     <div id="tab-record" class="tab-content active">
         <div class="card">
-            <h2 id="form-heading">毎日のカルテ入力</h2>
+            <h2 id="form-heading" style="font-size: 1.2rem; margin-top:0;">毎日のカルテ入力</h2>
             
             <!-- 前日内容コピーボタン -->
             <button type="button" class="btn-success" onclick="copyFromPreviousDay()">📋 前日の内容をそのままコピーする</button>
@@ -282,7 +318,7 @@
         </div>
 
         <div class="card">
-            <h2>📈 記録一覧・分析</h2>
+            <h2 style="font-size: 1.2rem; margin-top:0;">📈 記録一覧・分析</h2>
             <div class="table-responsive">
                 <table id="records-table">
                     <thead>
@@ -306,7 +342,7 @@
     <!-- 2. 分析ページ -->
     <div id="tab-analysis" class="tab-content">
         <div class="card">
-            <h2>📊 体重推移グラフ</h2>
+            <h2 style="font-size: 1.2rem; margin-top:0;">📊 体重推移グラフ</h2>
             <p style="color: var(--secondary); font-size: 0.9rem; margin-bottom: 16px;">登録された体重データの推移をグラフで確認できます。基準日および表示単位を変更してください。</p>
             
             <div class="analytics-controls">
@@ -333,7 +369,7 @@
     <!-- 3. マスタ情報のページ -->
     <div id="tab-master" class="tab-content">
         <div class="card">
-            <h2>⚙️ マスタ情報・基準値設定</h2>
+            <h2 style="font-size: 1.2rem; margin-top:0;">⚙️ マスタ情報・基準値設定</h2>
             <p style="color: var(--secondary); font-size: 0.9rem;">身長や基準体重、超過判定の基準値、および異常項目とその対策を設定できます。</p>
             
             <form id="master-form">
@@ -398,7 +434,6 @@
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
 <script>
-    // 永続化用の固定キー（今後変更しません）
     const STORAGE_KEY_RECORDS = 'physical_records_v_stable';
     const STORAGE_KEY_MASTER = 'physical_master_v_stable';
 
@@ -417,7 +452,6 @@
         ]
     };
 
-    // 過去の異なるキー名で保存されているデータがあれば自動で新キーに移行（救済）する
     function migrateOldData() {
         const oldMasterKeys = ['physical_master_stable_v2', 'physical_master'];
         const oldRecordKeys = ['physical_records_stable_v2', 'physical_records'];
@@ -442,7 +476,6 @@
             }
         }
 
-        // さらに異常項目の形式が古い文字列配列だった場合の修正
         const data = localStorage.getItem(STORAGE_KEY_MASTER);
         if (data) {
             try {
@@ -813,8 +846,10 @@
                 <td>${r.weight !== '' ? r.weight + ' kg' : '-'}</td>
                 <td>${summaryText}</td>
                 <td>
-                    <button onclick="editRecord('${r.date}')" style="padding: 4px 8px; font-size: 0.8rem; width: auto; margin-right: 4px; background:var(--primary); color:white; border:none; border-radius:4px; cursor:pointer;">編集</button>
-                    <button class="btn-danger" onclick="deleteRecord('${r.date}')">削除</button>
+                    <div style="display: flex; gap: 4px;">
+                        <button onclick="editRecord('${r.date}')" style="padding: 4px 8px; font-size: 0.8rem; background:var(--primary); color:white; border:none; border-radius:4px; cursor:pointer;">編集</button>
+                        <button class="btn-danger" onclick="deleteRecord('${r.date}')" style="padding: 4px 8px; font-size: 0.8rem; width: auto;">削除</button>
+                    </div>
                 </td>
             `;
             tbody.appendChild(tr);
@@ -930,7 +965,7 @@
                 scales: {
                     y: {
                         min: 45,
-                        max: 80,
+                        max: 75, // ← ここを 80 から 75 に変更しました
                         title: {
                             display: true,
                             text: '体重 (kg)'
